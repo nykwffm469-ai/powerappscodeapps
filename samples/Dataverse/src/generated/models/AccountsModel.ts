@@ -108,6 +108,65 @@ export const Accountsindustrycode = {
   33: 'Wholesale'
 } as const;
 export type Accountsindustrycode = keyof typeof Accountsindustrycode;
+export const Accountsmsdyn_invoiceaddress = {
+  806380000: 'InvoiceAccount',
+  806380001: 'OrderAccount'
+} as const;
+export type Accountsmsdyn_invoiceaddress = keyof typeof Accountsmsdyn_invoiceaddress;
+export const Accountsmsdyn_language = {
+  192350000: 'ar',
+  192350001: 'ar_ae',
+  192350002: 'cs',
+  192350003: 'da',
+  192350004: 'de',
+  192350005: 'de_at',
+  192350006: 'de_ch',
+  192350007: 'en_au',
+  192350008: 'en_ca',
+  192350009: 'en_gb',
+  192350010: 'en_ie',
+  192350011: 'en_in',
+  192350012: 'en_my',
+  192350013: 'en_nz',
+  192350014: 'en_sg',
+  192350015: 'en_us',
+  192350016: 'en_za',
+  192350017: 'es',
+  192350018: 'es_mx',
+  192350019: 'et',
+  192350020: 'fi',
+  192350021: 'fr',
+  192350022: 'fr_be',
+  192350023: 'fr_ca',
+  192350024: 'fr_ch',
+  192350025: 'hu',
+  192350026: 'is',
+  192350027: 'it',
+  192350028: 'it_ch',
+  192350029: 'ja',
+  192350030: 'lt',
+  192350031: 'lv',
+  192350032: 'nb_no',
+  192350033: 'nl',
+  192350034: 'nl_be',
+  192350035: 'pl',
+  192350036: 'pt_br',
+  192350037: 'ru',
+  192350038: 'sv',
+  192350039: 'th',
+  192350040: 'tr',
+  192350041: 'zh_hans'
+} as const;
+export type Accountsmsdyn_language = keyof typeof Accountsmsdyn_language;
+export const Accountsmsdyn_onholdstatus = {
+  806380000: 'No',
+  806380001: 'Invoice',
+  806380002: 'All',
+  806380003: 'Payment',
+  806380004: 'Requisition',
+  806380005: 'Never'
+} as const;
+export type Accountsmsdyn_onholdstatus = keyof typeof Accountsmsdyn_onholdstatus;
 export const Accountsownershipcode = {
   1: 'Public',
   2: 'Private',
@@ -169,7 +228,7 @@ export interface AccountsBase {
   accountcategorycode?: Accountsaccountcategorycode;
   accountclassificationcode?: Accountsaccountclassificationcode;
   accountid: string;
-  accountnumber?: string;
+  accountnumber: string;
   accountratingcode?: Accountsaccountratingcode;
   address1_addressid?: string;
   address1_addresstypecode?: Accountsaddress1_addresstypecode;
@@ -222,12 +281,11 @@ export interface AccountsBase {
   adx_modifiedbyipaddress?: string;
   adx_modifiedbyusername?: string;
   businesstypecode?: Accountsbusinesstypecode;
-  "crd1b_aimodel@odata.bind"?: string;
-  "crd1b_ContactPerson@odata.bind"?: string;
   creditlimit?: number;
   creditonhold?: boolean;
   customersizecode?: Accountscustomersizecode;
   customertypecode?: Accountscustomertypecode;
+  "DefaultPriceLevelId@odata.bind"?: string;
   description?: string;
   donotbulkemail?: boolean;
   donotbulkpostalmail?: boolean;
@@ -250,8 +308,56 @@ export interface AccountsBase {
   marketcap?: number;
   marketingonly?: boolean;
   "msa_managingpartnerid@odata.bind"?: string;
+  "msdyn_accountkpiid@odata.bind"?: string;
+  "msdyn_BillingAccount@odata.bind"?: string;
+  "msdyn_company@odata.bind": string;
+  msdyn_creditlimitismandatory?: boolean;
+  msdyn_creditrating?: string;
+  "msdyn_customergroupid@odata.bind"?: string;
+  "msdyn_customerpaymentmethod@odata.bind"?: string;
+  "msdyn_defaultvendorpaymentmethodname@odata.bind"?: string;
+  msdyn_emailaddress1description?: string;
+  msdyn_externalaccountid?: string;
+  msdyn_faxdescription?: string;
+  msdyn_faxextension?: string;
+  msdyn_gdproptout?: boolean;
+  msdyn_identificationnumber?: string;
+  msdyn_invoiceaddress?: Accountsmsdyn_invoiceaddress;
+  "msdyn_invoicevendoraccount@odata.bind"?: string;
+  msdyn_isexternal?: boolean;
+  msdyn_language?: Accountsmsdyn_language;
+  "msdyn_mappedvendoraccount@odata.bind"?: string;
+  msdyn_onetimecustomer?: boolean;
+  msdyn_onholdstatus?: Accountsmsdyn_onholdstatus;
+  msdyn_partycountry?: string;
+  msdyn_partynumber?: string;
+  msdyn_partystateprovince?: string;
+  "msdyn_paymentday@odata.bind"?: string;
+  "msdyn_paymentschedule@odata.bind"?: string;
+  "msdyn_paymentterm@odata.bind"?: string;
+  msdyn_paymenttermsbasedays?: number;
+  msdyn_primaryfacebookdescription?: string;
+  msdyn_primaryfacebookid?: string;
+  msdyn_primarylinkedindescrption?: string;
+  msdyn_primarylinkedinid?: string;
+  msdyn_primarytimezone?: number;
+  msdyn_primarytwitteriddescription?: string;
+  "msdyn_salesaccelerationinsightid@odata.bind"?: string;
+  "msdyn_salestaxgroup@odata.bind"?: string;
+  "msdyn_segmentid@odata.bind"?: string;
+  msdyn_taxexempt?: boolean;
+  msdyn_taxexemptnumber?: string;
+  msdyn_telephone1description?: string;
+  msdyn_telephone1extension?: string;
+  "msdyn_vendor@odata.bind"?: string;
+  msdyn_vendorcreatedbyworkflow?: boolean;
+  "msdyn_vendorgroup@odata.bind"?: string;
+  msdyn_vendorknownasname?: string;
+  msdyn_vendororganizationname?: string;
+  msdyn_websiteurldescription?: string;
   name: string;
   numberofemployees?: number;
+  "OriginatingLeadId@odata.bind"?: string;
   overriddencreatedon?: string;
   ownerid: string;
   owneridtype: string;
@@ -262,6 +368,8 @@ export interface AccountsBase {
   preferredappointmentdaycode?: Accountspreferredappointmentdaycode;
   preferredappointmenttimecode?: Accountspreferredappointmenttimecode;
   preferredcontactmethodcode?: Accountspreferredcontactmethodcode;
+  "PreferredEquipmentId@odata.bind"?: string;
+  "PreferredServiceId@odata.bind"?: string;
   "PreferredSystemUserId@odata.bind"?: string;
   "PrimaryContactId@odata.bind"?: string;
   primarysatoriid?: string;
@@ -276,10 +384,12 @@ export interface AccountsBase {
   statecode: Accountsstatecode;
   statuscode?: Accountsstatuscode;
   stockexchange?: string;
+  teamsfollowed?: number;
   telephone1?: string;
   telephone2?: string;
   telephone3?: string;
   territorycode?: Accountsterritorycode;
+  "TerritoryId@odata.bind"?: string;
   tickersymbol?: string;
   timezoneruleversionnumber?: number;
   "TransactionCurrencyId@odata.bind"?: string;
@@ -308,11 +418,6 @@ export interface Accounts extends AccountsBase {
   aging90?: number;
   aging90_base?: number;
   businesstypecodename?: string;
-  crd1b_accountfileattachment?: string;
-  crd1b_accountfileattachment_name?: string;
-  crd1b_aimodelname?: string;
-  crd1b_contactpersonname?: string;
-  crd1b_contactpersonyominame?: string;
   createdbyexternalpartyname?: string;
   createdbyexternalpartyyominame?: string;
   createdbyname?: string;
@@ -324,6 +429,7 @@ export interface Accounts extends AccountsBase {
   creditonholdname?: string;
   customersizecodename?: string;
   customertypecodename?: string;
+  defaultpricelevelidname: string;
   donotbulkemailname?: string;
   donotbulkpostalmailname?: string;
   donotemailname?: string;
@@ -354,7 +460,42 @@ export interface Accounts extends AccountsBase {
   modifiedonbehalfbyyominame?: string;
   msa_managingpartneridname?: string;
   msa_managingpartneridyominame?: string;
+  msdyn_accountkpiidname?: string;
+  msdyn_billingaccountname?: string;
+  msdyn_billingaccountyominame?: string;
+  msdyn_companyname?: string;
+  msdyn_creditlimitismandatoryname?: string;
+  msdyn_customergroupidname?: string;
+  msdyn_customerpaymentmethodname?: string;
+  msdyn_defaultvendorpaymentmethodnamename?: string;
+  msdyn_gdproptoutname?: string;
+  msdyn_invoiceaddressname?: string;
+  msdyn_invoicevendoraccountname?: string;
+  msdyn_isexternalname?: string;
+  msdyn_languagename?: string;
+  msdyn_mappedvendoraccountname?: string;
+  msdyn_onetimecustomername?: string;
+  msdyn_onholdstatusname?: string;
+  msdyn_paymentdayname?: string;
+  msdyn_paymentschedulename?: string;
+  msdyn_paymenttermname?: string;
+  msdyn_salesaccelerationinsightidname?: string;
+  msdyn_salestaxgroupname?: string;
+  msdyn_segmentidname?: string;
+  msdyn_taxexemptname?: string;
+  msdyn_vendorcreatedbyworkflowname?: string;
+  msdyn_vendorgroupname?: string;
+  msdyn_vendorname?: string;
   onholdtime?: number;
+  opendeals?: number;
+  opendeals_date?: string;
+  opendeals_state?: number;
+  openrevenue?: number;
+  openrevenue_base?: number;
+  openrevenue_date?: string;
+  openrevenue_state?: number;
+  originatingleadidname?: string;
+  originatingleadidyominame?: string;
   owneridname: string;
   owneridyominame: string;
   ownershipcodename?: string;
@@ -366,6 +507,8 @@ export interface Accounts extends AccountsBase {
   preferredappointmentdaycodename?: string;
   preferredappointmenttimecodename?: string;
   preferredcontactmethodcodename?: string;
+  preferredequipmentidname: string;
+  preferredserviceidname: string;
   preferredsystemuseridname?: string;
   preferredsystemuseridyominame?: string;
   primarycontactidname?: string;
@@ -377,19 +520,18 @@ export interface Accounts extends AccountsBase {
   statecodename?: string;
   statuscodename?: string;
   territorycodename?: string;
+  territoryidname: string;
   timespentbymeonemailandmeetings?: string;
   transactioncurrencyidname?: string;
   versionnumber?: number;
-  crd1b_aimodel?: object;
-  _crd1b_aimodel_value?: string;
-  crd1b_contactperson?: object;
-  _crd1b_contactperson_value?: string;
   createdby?: object;
   _createdby_value?: string;
   createdbyexternalparty?: object;
   _createdbyexternalparty_value?: string;
   createdonbehalfby?: object;
   _createdonbehalfby_value?: string;
+  defaultpricelevelid?: object;
+  _defaultpricelevelid_value?: string;
   masterid?: object;
   _masterid_value?: string;
   modifiedby?: object;
@@ -400,6 +542,40 @@ export interface Accounts extends AccountsBase {
   _modifiedonbehalfby_value?: string;
   msa_managingpartnerid?: object;
   _msa_managingpartnerid_value?: string;
+  msdyn_accountkpiid?: object;
+  _msdyn_accountkpiid_value?: string;
+  msdyn_billingaccount?: object;
+  _msdyn_billingaccount_value?: string;
+  msdyn_company?: object;
+  _msdyn_company_value?: string;
+  msdyn_customergroupid?: object;
+  _msdyn_customergroupid_value?: string;
+  msdyn_customerpaymentmethod?: object;
+  _msdyn_customerpaymentmethod_value?: string;
+  msdyn_defaultvendorpaymentmethodname?: object;
+  _msdyn_defaultvendorpaymentmethodname_value?: string;
+  msdyn_invoicevendoraccount?: object;
+  _msdyn_invoicevendoraccount_value?: string;
+  msdyn_mappedvendoraccount?: object;
+  _msdyn_mappedvendoraccount_value?: string;
+  msdyn_paymentday?: object;
+  _msdyn_paymentday_value?: string;
+  msdyn_paymentschedule?: object;
+  _msdyn_paymentschedule_value?: string;
+  msdyn_paymentterm?: object;
+  _msdyn_paymentterm_value?: string;
+  msdyn_salesaccelerationinsightid?: object;
+  _msdyn_salesaccelerationinsightid_value?: string;
+  msdyn_salestaxgroup?: object;
+  _msdyn_salestaxgroup_value?: string;
+  msdyn_segmentid?: object;
+  _msdyn_segmentid_value?: string;
+  msdyn_vendor?: object;
+  _msdyn_vendor_value?: string;
+  msdyn_vendorgroup?: object;
+  _msdyn_vendorgroup_value?: string;
+  originatingleadid?: object;
+  _originatingleadid_value?: string;
   owningbusinessunit?: object;
   _owningbusinessunit_value?: string;
   owningteam?: object;
@@ -408,6 +584,10 @@ export interface Accounts extends AccountsBase {
   _owninguser_value?: string;
   parentaccountid?: object;
   _parentaccountid_value?: string;
+  preferredequipmentid?: object;
+  _preferredequipmentid_value?: string;
+  preferredserviceid?: object;
+  _preferredserviceid_value?: string;
   preferredsystemuserid?: object;
   _preferredsystemuserid_value?: string;
   primarycontactid?: object;
@@ -416,11 +596,9 @@ export interface Accounts extends AccountsBase {
   _slaid_value?: string;
   slainvokedid?: object;
   _slainvokedid_value?: string;
+  territoryid?: object;
+  _territoryid_value?: string;
   transactioncurrencyid?: object;
   _transactioncurrencyid_value?: string;
 }
-export type AccountsFileColumnName = 'crd1b_accountfileattachment';
-
-export type AccountsImageColumnName = 'entityimage';
-
-export type AccountsUploadColumnName = AccountsFileColumnName | AccountsImageColumnName;
+export type AccountsUploadColumnName = 'entityimage';

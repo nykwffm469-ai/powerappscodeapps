@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "appId": "e5b2f514-1403-4683-ac2a-dba9632a53a6",
+  "appDisplayName": "Dataverse Demo App",
+  "region": "prod",
+  "environmentId": "3869f81e-17a9-e019-b782-9424db258c12",
+  "description": " ",
+  "buildPath": "./dist",
+  "buildEntryPoint": "index.html",
+  "localAppUrl": "http://localhost:3000",
+  "logoPath": "Default",
+  "connectionReferences": {},
+  "databaseReferences": {
+    "default.cds": {
+      "dataSources": {
+        "contacts": {
+          "entitySetName": "contacts",
+          "logicalName": "contact"
+        },
+        "accounts": {
+          "entitySetName": "accounts",
+          "logicalName": "account"
+        }
+      },
+      "environmentVariableName": ""
+    }
+  }
+}

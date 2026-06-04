@@ -73,8 +73,6 @@ export function useAccountsCrud() {
           'createdon',
           'modifiedon',
           '_createdby_value',
-          'crd1b_accountfileattachment',
-          'crd1b_accountfileattachment_name',
           'entityimage',
         ],
         orderBy: [DEFAULT_SORT_ORDER],
@@ -85,7 +83,7 @@ export function useAccountsCrud() {
         setAccounts(result.data);
         const currentId = selectedAccountRef.current?.accountid;
         if (currentId) {
-          // Refresh the selected account so fields like crd1b_accountfileattachment_name are up to date
+          // Refresh the selected account so attachment/image fields stay up to date
           const refreshed = result.data.find(a => a.accountid === currentId);
           if (refreshed) setSelectedAccount(refreshed);
         } else if (result.data.length > 0) {

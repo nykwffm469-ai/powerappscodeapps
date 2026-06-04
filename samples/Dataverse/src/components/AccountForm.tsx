@@ -15,7 +15,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import type { Accounts, AccountsUploadColumnName, AccountsFileColumnName, AccountsImageColumnName } from '../generated/models/AccountsModel';
+import type { Accounts } from '../generated/models/AccountsModel';
 import { AccountsService } from '../generated/services/AccountsService';
 
 export interface AccountFormData {
@@ -64,12 +64,8 @@ export function AccountForm({
 
   // --- Attachment sub-form state ---
   const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
-  const [columnName, setColumnName] = useState<AccountsUploadColumnName>('crd1b_accountfileattachment');
   const [fileDisplayName, setFileDisplayName] = useState('');
   const [isUploading, setIsUploading] = useState(false);
-  const [isClearingFile, setIsClearingFile] = useState(false);
-  const [downloadingCol, setDownloadingCol] = useState<AccountsUploadColumnName | null>(null);
-  const [imageFullSize, setImageFullSize] = useState(false);
 
   // --- Toast state ---
   const [toast, setToast] = useState<Toast | null>(null);
@@ -102,7 +98,6 @@ export function AccountForm({
     }
     // Reset attachment state when account changes
     setAttachmentFile(null);
-    setColumnName('crd1b_accountfileattachment');
     setFileDisplayName('');
   }, [selectedAccount, isCreating]);
 
@@ -140,83 +135,17 @@ export function AccountForm({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
     setAttachmentFile(file);
-    setColumnName('crd1b_accountfileattachment');
     setFileDisplayName('');
   };
 
-  const triggerBlobDownload = (data: Uint8Array, fileName: string) => {
-    const blob = new Blob([data as BlobPart], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
-
-  const handleDownload = async (col: AccountsFileColumnName, fallbackFileName: string) => {
-    if (!selectedAccount?.accountid) return;
-    setDownloadingCol(col);
-    try {
-      const result = await AccountsService.downloadFile(selectedAccount.accountid, col);
-      if (result.success && result.data) {
-        triggerBlobDownload(result.data, result.fileName ?? fallbackFileName);
-      } else {
-        showToast('Download failed.', 'error');
-      }
-    } catch (err) {
-      showToast(`Download error: ${(err as Error).message}`, 'error');
-    } finally {
-      setDownloadingCol(null);
-    }
-  };
-
-  const handleDownloadImage = async (fallbackFileName: string) => {
-    if (!selectedAccount?.accountid) return;
-    const imageCol: AccountsImageColumnName = 'entityimage';
-    setDownloadingCol(imageCol);
-    try {
-      const result = await AccountsService.downloadImage(selectedAccount.accountid, imageCol, imageFullSize);
-      if (result.success && result.data) {
-        triggerBlobDownload(result.data, result.fileName ?? fallbackFileName);
-      } else {
-        showToast(`Image download failed: ${result.error?.message ?? 'unknown error'}`, 'error');
-      }
-    } catch (err) {
-      showToast(`Image download error: ${(err as Error).message}`, 'error');
-    } finally {
-      setDownloadingCol(null);
-    }
-  };
-
-  const handleClearFile = async (col: AccountsUploadColumnName) => {
-    if (!selectedAccount?.accountid) return;
-    setIsClearingFile(true);
-    try {
-      const result = await AccountsService.deleteFileOrImage(selectedAccount.accountid, col);
-      if (result.success) {
-        showToast('File removed successfully.', 'success');
-        onUploadSuccess?.();
-      } else {
-        showToast(`Failed to clear file: ${result.error?.message ?? 'unknown error'}`, 'error');
-      }
-    } catch (err) {
-      showToast(`Error clearing file: ${(err as Error).message}`, 'error');
-    } finally {
-      setIsClearingFile(false);
-    }
-  };
-
   const handleUpload = async () => {
-    if (!attachmentFile || !selectedAccount?.accountid || !columnName.trim()) return;
+    if (!attachmentFile || !selectedAccount?.accountid) return;
 
     setIsUploading(true);
     try {
       const result = await AccountsService.upload(
         selectedAccount.accountid,
-        columnName,
+        'entityimage',
         attachmentFile,
         fileDisplayName.trim() || attachmentFile.name,
       );
@@ -226,7 +155,6 @@ export function AccountForm({
         onUploadSuccess?.();
         // Reset attachment fields on success
         setAttachmentFile(null);
-        setColumnName('crd1b_accountfileattachment');
         setFileDisplayName('');
         // Reset the file input element
         const fileInput = document.getElementById('attachment-file') as HTMLInputElement;
@@ -360,73 +288,14 @@ export function AccountForm({
         <div className="attachment-subform">
           <h3>Attachments</h3>
 
-          {/* Current file stored in crd1b_accountfileattachment */}
           <div className="form-group">
-            <label>crd1b_accountfileattachment (current value)</label>
-            {selectedAccount.crd1b_accountfileattachment_name ? (
-              <div className="file-current">
-                <span className="file-current-icon">📄</span>
-                <span className="file-current-name">{selectedAccount.crd1b_accountfileattachment_name}</span>
-                <button
-                  type="button"
-                  className="file-action-btn"
-                  onClick={() => handleDownload('crd1b_accountfileattachment', selectedAccount.crd1b_accountfileattachment_name!)}
-                  disabled={downloadingCol === 'crd1b_accountfileattachment'}
-                  title="Download file"
-                >
-                  {downloadingCol === 'crd1b_accountfileattachment' ? '…' : '⬇'}
-                </button>
-                <button
-                  type="button"
-                  className="file-clear-btn"
-                  onClick={() => handleClearFile('crd1b_accountfileattachment')}
-                  disabled={isClearingFile}
-                  title="Remove file"
-                >
-                  {isClearingFile ? '…' : '×'}
-                </button>
-              </div>
-            ) : (
-              <p className="file-empty">No file uploaded yet.</p>
-            )}
-          </div>
-
-          {/* Current image stored in entityimage */}
-          <div className="form-group">
-            <label>entityimage (current value)</label>
+            <label>entityimage (status)</label>
             {selectedAccount.entityimage ? (
               <div className="file-current">
-                <span className="file-current-name">Stored image</span>
-                <button
-                  type="button"
-                  className="file-action-btn"
-                  onClick={() => setImageFullSize(f => !f)}
-                  title={imageFullSize ? 'Switch to thumbnail' : 'Switch to full size'}
-                  style={{ fontSize: '0.7rem', padding: '2px 6px' }}
-                >
-                  {imageFullSize ? 'Full' : 'Thumb'}
-                </button>
-                <button
-                  type="button"
-                  className="file-action-btn"
-                  onClick={() => handleDownloadImage(selectedAccount.name || 'image')}
-                  disabled={downloadingCol === 'entityimage'}
-                  title="Download image"
-                >
-                  {downloadingCol === 'entityimage' ? '…' : '⬇'}
-                </button>
-                <button
-                  type="button"
-                  className="file-clear-btn"
-                  onClick={() => handleClearFile('entityimage')}
-                  disabled={isClearingFile}
-                  title="Remove image"
-                >
-                  {isClearingFile ? '…' : '×'}
-                </button>
+                <span className="file-current-name">Image exists</span>
               </div>
             ) : (
-              <p className="file-empty">No image uploaded yet.</p>
+              <p className="file-empty">No image uploaded yet. Uploading will update entityimage.</p>
             )}
           </div>
 
@@ -441,21 +310,6 @@ export function AccountForm({
 
           {attachmentFile && (
             <>
-              <div className="form-group">
-                <label htmlFor="attachment-column">
-                  Column Name <span className="required-mark">*</span>
-                </label>
-                <select
-                  id="attachment-column"
-                  value={columnName}
-                  onChange={(e) => setColumnName(e.target.value as AccountsUploadColumnName)}
-                >
-                  <option value="crd1b_accountfileattachment">crd1b_accountfileattachment</option>
-                  <option value="entityimage">entityimage</option>
-                </select>
-                <small>The schema name of the file/image column to upload to</small>
-              </div>
-
               <div className="form-group">
                 <label htmlFor="attachment-displayname">Display Name</label>
                 <input
@@ -473,7 +327,7 @@ export function AccountForm({
                   type="button"
                   className="btn-primary"
                   onClick={handleUpload}
-                  disabled={isUploading || !columnName.trim()}
+                  disabled={isUploading}
                 >
                   {isUploading ? 'Uploading...' : 'Upload'}
                 </button>
